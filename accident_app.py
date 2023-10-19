@@ -27,9 +27,7 @@ def load_and_preprocess_video(video_path):
         frame = frame[:, :, [2, 1, 0]]
         frames.append(frame)
     cap.release()
-    # print("Total Frames:", total_frames)
-    # print("Frames per Second:", fps)
-    # print("frame processed:",len(frames))
+
     return np.array(frames)
 
 
@@ -88,41 +86,6 @@ def create_chunks_from_frames(frames, window_size=30):
     return chunks
 
 
-# def overlay_predictions_to_video(frames, predictions):
-#     temp_dir = 'temp_frames'
-    
-#     # Clear existing frames and video if they exist
-#     if os.path.exists(temp_dir):
-#         shutil.rmtree(temp_dir)
-#     os.makedirs(temp_dir)
-    
-#     video_output_path = 'p_user_upload.mp4'
-#     if os.path.exists(video_output_path):
-#         os.remove(video_output_path)
-
-#     frame_idx = 0
-
-#     for prediction in predictions:
-#         # Overlay the prediction for WINDOW_SIZE frames
-#         if frame_idx >= len(frames):  # Make sure not to exceed total frames
-#             break
-#         frame = frames[frame_idx]
-        
-#         frame_idx += 1
-#         color = (0, 255, 0) if prediction[1] > prediction[0] else (255, 0, 0)
-#         frame = cv2.putText(frame, f"Accident: {prediction[0]:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2, cv2.LINE_AA)
-#         frame = cv2.putText(frame, f"No Accident: {prediction[1]:.2f}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2, cv2.LINE_AA)
-#         frame = frame[:, :, [2, 1, 0]]
-            
-#         # Save frame to disk
-#         cv2.imwrite(os.path.join(temp_dir, f'frame_{frame_idx:04d}.png'), frame)
-
-#     # Use ffmpeg to stitch frames into video
-#     cmd = f"ffmpeg -framerate 20 -i {temp_dir}/frame_%04d.png -c:v libx264 -pix_fmt yuv420p {video_output_path}"
-#     subprocess.call(cmd, shell=True)
-
-#     # Remove the temporary frames directory
-#     shutil.rmtree(temp_dir)
 def overlay_predictions_to_video(frames, predictions):
     temp_dir = 'temp_frames'
     
